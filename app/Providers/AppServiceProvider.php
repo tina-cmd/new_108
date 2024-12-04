@@ -25,6 +25,9 @@ class AppServiceProvider extends ServiceProvider
             'auth.user' => function () {
                 return Auth::user();
             },
+            'error' => function () {
+                return session('error');
+            }
         ]);
     }
 }

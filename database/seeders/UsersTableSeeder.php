@@ -16,8 +16,8 @@ class UsersTableSeeder extends Seeder
         DB::table('users')->insert([
             [
                 'name' => 'Librarian',
-                'username' => 'postgres',
-                'password' => bcrypt('admin'), // Always hash passwords
+                'username' => 'librarian',
+                'password' => bcrypt('librarian'), // Always hash passwords
                 'role' => 'librarian',
                 'created_at' => now(),
                 'updated_at' => now(),

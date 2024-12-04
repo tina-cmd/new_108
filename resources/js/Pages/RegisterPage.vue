@@ -12,7 +12,7 @@ const form = useForm({
 
 // Computed property to check form validity
 const isFormValid = computed(() => {
-    return form.name.trim() && form.username.trim() && form.password.trim();
+    return form.name.trim() && form.username.trim() && form.password.trim() && form.student;
 });
 
 // Handle register action

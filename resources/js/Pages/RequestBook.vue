@@ -1,6 +1,6 @@
 <template>
     <div class="flex-1 p-6 max-h-full">
-        <h1 class="text-2xl font-bold">Book Inventory</h1>
+        <h1 class="text-2xl font-bold">Request a Book</h1>
 
         <!-- Search Bar -->
         <div class="mt-4 flex items-center">
@@ -25,7 +25,6 @@
                     <tr class="bg-gray-800 text-white">
                         <th class="px-4 py-2 border border-gray-300 text-left">Book Name</th>
                         <th class="px-4 py-2 border border-gray-300 text-left">Description</th>
-                        <th class="px-4 py-2 border border-gray-300 text-left">Remaining Quantity</th>
                         <th class="px-4 py-2 border border-gray-300 text-left">Action</th>
                     </tr>
                 </thead>
@@ -33,9 +32,8 @@
                     <tr class="bg-gray-50" v-for="record in filteredRecords" :key="record.id">
                         <td class="px-4 py-2 border border-gray-300">{{ record.name }}</td>
                         <td class="px-4 py-2 border border-gray-300">{{ record.description }}</td>
-                        <td class="px-4 py-2 border border-gray-300">{{ record.qty }}</td>
                         <td class="px-4 py-2 border border-gray-300 text-center">
-                            <button @click="editRecord(record)" class="text-blue-500 hover:underline">Edit</button>
+                            <button @click="openRequestModal(record)" class="text-green-500 hover:underline">Request</button>
                         </td>
                     </tr>
                     <tr v-if="props.records.length === 0"> 
@@ -47,26 +45,28 @@
             </table>
         </div>
 
-        <!-- Edit Form -->
-        <div v-if="isEditing" class="mt-4 p-4 border border-gray-300 rounded-md bg-gray-50">
-            <h3 class="text-lg font-bold mb-4">Edit Quantity</h3>
-            <form @submit.prevent="updateRecord">
-                <p><b>Book name: </b>{{ currentRecord.name }}</p>
-                <div class="mb-4">
-                    <label for="edit-quantity" class="text-gray-700"><b>Quantity: </b></label>
-                    <input
-                        id="edit-quantity"
-                        v-model="currentRecord.qty"
-                        type="number"
-                        class="px-4 py-2 border rounded-md"
-                        required
-                    />
-                </div>
-                <div class="text-center">
-                    <button type="submit" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">Save</button>
-                    <button @click="cancelEdit" type="button" class="ml-2 bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600">Cancel</button>
-                </div>
-            </form>
+        <!-- Request Modal -->
+        <div v-if="isRequesting" class="fixed inset-0 z-50 flex items-center justify-center bg-gray-800 bg-opacity-75">
+            <div class="bg-white p-6 rounded-lg shadow-lg w-96">
+                <h3 class="text-lg font-bold mb-4">Request Book</h3>
+                <form @submit.prevent="requestBook(currentRecord.id)">
+                    <p><b>Book name: </b>{{ currentRecord.name }}</p>
+                    <div class="mb-4">
+                        <label for="request-quantity" class="text-gray-700"><b>Quantity: </b></label>
+                        <input
+                            id="request-quantity"
+                            v-model="form.requestQty"
+                            type="number"
+                            class="px-4 py-2 border rounded-md w-full"
+                            required
+                        />
+                    </div>
+                    <div class="text-center">
+                        <button type="submit" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">Request</button>
+                        <button @click="closeRequestModal" type="button" class="ml-2 bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600">Cancel</button>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
 </template>
@@ -74,8 +74,8 @@
 <script setup>
 import { ref, computed } from "vue";
 import Layout from "../Layouts/Layout.vue";
-import { useForm } from "@inertiajs/vue3";
 import { defineProps } from "vue";
+import { useForm } from "@inertiajs/vue3";
 
 const props = defineProps({
     records: {
@@ -88,14 +88,16 @@ const props = defineProps({
 defineOptions({ layout: Layout });
 
 const searchQuery = ref("");
-const isEditing = ref(false);
-const currentRecord = useForm({
+const isRequesting = ref(false);
+const currentRecord = ref({});
+
+const form = useForm({
     id: 0,
-    name: "",
-    qty: 0,
+    requestQty: 0,
 });
 
-// Computed property for filtered records based on search query
+
+// Filtered records based on search query
 const filteredRecords = computed(() => {
     if (!searchQuery.value) {
         return props.records;
@@ -106,27 +108,27 @@ const filteredRecords = computed(() => {
     );
 });
 
-const editRecord = (record) => {
-    isEditing.value = true;
-    currentRecord.id = parseInt(record.id, 10);
-    currentRecord.qty = parseInt(record.qty, 10);
-    currentRecord.name = record.name;
+const openRequestModal = (record) => {
+    isRequesting.value = true;
+    currentRecord.value = record;
+    requestQty.value = 0;
 };
 
-const cancelEdit = () => {
-    isEditing.value = false;
-    currentRecord.qty = 0;
-    currentRecord.id = 0;
+const closeRequestModal = () => {
+    isRequesting.value = false;
+    currentRecord.value = {};
 };
 
-const updateRecord = () => {
-    currentRecord.put(`/dashboard/inventory/${currentRecord.id}`);
-    isEditing.value = false;
-    currentRecord.value = null;
+const requestBook = (i_id) => {
+    isRequesting.value = false;
+    form.id = i_id;
+    if(confirm("Sure to request the book?")) {
+        form.post('/dashboard/request_book');
+    }
 };
 
-// Function to perform search (optional if you need to trigger additional actions)
 const performSearch = () => {
+    // This function gets triggered every time the search input changes
     console.log("Performing search for:", searchQuery.value);
 };
 </script>

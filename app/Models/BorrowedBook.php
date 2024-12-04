@@ -8,7 +8,7 @@ class BorrowedBook extends Model
 {
     protected $table = 'borrowed_books';
     protected $fillable = [
-        'book_id', 
+        'inventory_id', 
         'user_id', 
         'qty', 
         'start_date', 
@@ -17,9 +17,9 @@ class BorrowedBook extends Model
     ];
 
     // Relationship with Book
-    public function book()
+    public function inventory()
     {
-        return $this->belongsTo(Book::class);
+        return $this->belongsTo(Inventory::class);
     }
 
     // Relationship with User

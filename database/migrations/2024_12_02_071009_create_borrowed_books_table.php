@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('borrowed_books', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('inventory_id')->constrained('inventory')->onDelete('cascade');
+            $table->foreignId('inventory_id')->constrained('inventories')->onDelete('cascade');
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
             $table->integer('qty');
             $table->date('start_date');

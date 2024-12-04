@@ -1,6 +1,6 @@
 <template>
     <div class="p-6 w-full mx-auto">
-        
+        <!-- <p v-if="error"></p> -->
         <!-- Book Table -->
         <BookTable
             :books="props.books"
@@ -26,19 +26,24 @@ import { onMounted, ref } from "vue";
 import BookTable from "../Components/BookTable.vue";
 import AddBook from "../Components/AddBook.vue";
 import Layout from "../Layouts/Layout.vue";
-import { useForm } from "@inertiajs/vue3";
+import { useForm, usePage } from "@inertiajs/vue3";
 
 defineOptions({ layout: Layout });
 
-
+// const page = usePage();
+// const {er = null} = page.props.error;
+// const b = page.props.value.books;
 
 const props = defineProps({
     books: {
         type: Array,
         default: () => [],
     },
+    error: {
+        type: String,
+        default: "",
+    },
 });
-
 
 const showAddBookForm = ref(false);
 
@@ -78,18 +83,19 @@ const confirmDelete = (id) => {
     del.delete(`/dashboard/books/${id}`);
 };
 
-
 const updateBook = (editBook) => {
     // alert(editBook.id);
     book.name = editBook.name;
     book.description = editBook.description;
 
-    if(confirm("Are you sure you want to edit this record?")) {
+    if (confirm("Are you sure you want to edit this record?")) {
         book.put(`/dashboard/books/${editBook.id}`);
     }
     book.name = "";
     book.description = "";
-}
+};
 
-
+// onMounted(() => {
+//     console.log(props);
+// });
 </script>

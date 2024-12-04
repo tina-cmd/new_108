@@ -12,8 +12,16 @@ use Carbon\Carbon;
 class BookController extends Controller
 {
     public function get_books(Request $request) {
+        
         $books = Book::all();
-        return Inertia::render('Book', [ 'books' => $books ]);
+        
+        if (session()->has('error')) {
+            $error = session('error');
+            session()->forget('error');
+            // dd($error);
+            return Inertia::render('Book', [ 'error' => $error]);
+        }
+        return Inertia::render('Book', [ 'books' => $books]);
     }
 
     public function delete_books(Book $id) {
@@ -29,7 +37,7 @@ class BookController extends Controller
         ]);
 
         $bookExists = Book::where('name', '=', $book['name'])->first();
-
+        // dd($bookExists);
         
         if($bookExists) {
             // $books = Book::all();

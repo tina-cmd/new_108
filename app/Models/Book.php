@@ -12,9 +12,9 @@ class Book extends Model
         'description',
     ];
 
-    public function borrowedBooks() {
-        return $this->hasMany(BorrowedBook::class);
-    }
+    // public function borrowedBooks() {
+    //     return $this->hasMany(BorrowedBook::class);
+    // }
 
     public function inventory() {
         return $this->hasOne(Inventory::class);

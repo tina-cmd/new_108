@@ -110,14 +110,43 @@ onBeforeUnmount(() => {
                     Borrow Request
                 </Link>
                 <Link
+                    v-if="auth.user.role === 'member'"
+                    href="/dashboard/request_book"
+                    class="block px-4 py-2 text-left hover:bg-gray-300 rounded-md"
+                    :class="{
+                        active: $page.url.startsWith(
+                            '/dashboard/request_book'
+                        ),
+                    }"
+                >
+                    Request Book
+                </Link>
+
+                <Link
+                    v-if="auth.user.role === 'member'"
+                    href="/dashboard/requested_books"
+                    class="block px-4 py-2 text-left hover:bg-gray-300 rounded-md"
+                    :class="{
+                        active: $page.url.startsWith(
+                            '/dashboard/requested_books'
+                        ),
+                    }"
+                >
+                    Requested Books
+                </Link>
+
+                <Link
                     href="/dashboard/borrowed_books"
                     class="block px-4 py-2 text-left hover:bg-gray-300 rounded-md"
                     :class="{
-                        active: $page.url.startsWith('/dashboard/borrowed_books')
+                        active: $page.url.startsWith(
+                            '/dashboard/borrowed_books'
+                        ),
                     }"
                 >
                     Borrowed Books
                 </Link>
+
                 <Link
                     href="/logout"
                     method="post"

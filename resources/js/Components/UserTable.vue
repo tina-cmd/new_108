@@ -1,7 +1,7 @@
 <template>
     <div class="max-h-full">
         <h2 class="text-2xl font-bold text-gray-800 mb-4">User Management</h2>
-        <table class="min-w-full border border-gray-300">
+        <table class="min-w-full rounded-md border border-gray-300">
             <thead>
                 <tr class="bg-gray-800 text-white">
                     <th class="px-4 py-2 border">Name</th>
