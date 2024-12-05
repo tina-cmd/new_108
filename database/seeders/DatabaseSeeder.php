@@ -2,9 +2,9 @@
 
 namespace Database\Seeders;
 
-use App\Models\BookRequest;
-use App\Models\Inventory;
-use App\Models\User;
+// use App\Models\BookRequest;
+// use App\Models\Inventory;
+// use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -19,7 +19,7 @@ class DatabaseSeeder extends Seeder
 
         $this->call(UsersTableSeeder::class);
         $this->call(BooksTableSeeder::class);
-        $this->call(Inventory::class);
+        $this->call(InventorySeeder::class);
         $this->call(BookRequestSeeder::class);
 
         // User::factory()->create([

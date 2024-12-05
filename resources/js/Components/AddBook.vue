@@ -10,7 +10,7 @@
                 >
                 <input
                     id="bookName"
-                    v-model="bookName"
+                    v-model="form.name"
                     type="text"
                     placeholder="Enter book name"
                     class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-blue-200"
@@ -26,7 +26,7 @@
                 >
                 <textarea
                     id="description"
-                    v-model="description"
+                    v-model="form.description"
                     placeholder="Enter description"
                     rows="4"
                     class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-blue-200"
@@ -42,7 +42,7 @@
                 >
                 <input
                     id="quantity"
-                    v-model="quantity"
+                    v-model="form.quantity"
                     type="number"
                     min="1"
                     placeholder="Enter quantity"
@@ -63,26 +63,27 @@
 
 <script setup>
 import { ref } from "vue";
+import { useForm } from "@inertiajs/vue3";
 
 
 
 const emit = defineEmits(["add-book"]);
 
-const bookName = ref("");
-const description = ref("");
-const quantity = ref("");
+const form = useForm({
+    name: '',
+    description: '',
+    quantiry: 0,
+});
 
 const submitForm = () => {
     
     const newBook = {
-        name: bookName.value,
-        description: description.value,
-        quantity: parseInt(quantity.value, 10),
+        name: form.name,
+        description: form.description,
+        quantity: parseInt(form.quantity, 10),
     };
-    bookName.value = "";
-    description.value = "";
-    quantity.value = "";
     emit("add-book", newBook);
+    form.reset();
 };
 
 </script>

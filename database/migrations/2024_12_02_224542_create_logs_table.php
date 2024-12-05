@@ -16,8 +16,9 @@ return new class extends Migration
             $table->string('table_name', 50);
             $table->string('action', 20);
             $table->integer('record_id');
+            $table->jsonb('affected_columns');
             $table->string('performed_by', 50);
-            $table->timestamp('log_time');
+            $table->timestamp('log_time')->useCurrent();
             // $table->timestamps();
         });
     }

@@ -20,7 +20,6 @@ class UsersTableSeeder extends Seeder
                 'password' => bcrypt('librarian'), // Always hash passwords
                 'role' => 'librarian',
                 'created_at' => now(),
-                'updated_at' => now(),
             ],
             [
                 'name' => 'Assistant',
@@ -28,7 +27,6 @@ class UsersTableSeeder extends Seeder
                 'password' => bcrypt('assistant'),
                 'role' => 'assistant',
                 'created_at' => now(),
-                'updated_at' => now(),
             ],
             [
                 'name' => 'Dodong',
@@ -36,7 +34,6 @@ class UsersTableSeeder extends Seeder
                 'password' => bcrypt('dodong'), // Always hash passwords
                 'role' => 'member',
                 'created_at' => now(),
-                'updated_at' => now(),
             ],
         ]);
     }

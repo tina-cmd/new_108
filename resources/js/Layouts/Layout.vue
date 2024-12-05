@@ -114,9 +114,7 @@ onBeforeUnmount(() => {
                     href="/dashboard/request_book"
                     class="block px-4 py-2 text-left hover:bg-gray-300 rounded-md"
                     :class="{
-                        active: $page.url.startsWith(
-                            '/dashboard/request_book'
-                        ),
+                        active: $page.url.startsWith('/dashboard/request_book'),
                     }"
                 >
                     Request Book
@@ -145,6 +143,17 @@ onBeforeUnmount(() => {
                     }"
                 >
                     Borrowed Books
+                </Link>
+
+                <Link
+                    v-if="auth.user.role === 'librarian'"
+                    href="/dashboard/logs"
+                    class="block px-4 py-2 text-left hover:bg-gray-300 rounded-md"
+                    :class="{
+                        active: $page.url.startsWith('/dashboard/logs'),
+                    }"
+                >
+                    Logs
                 </Link>
 
                 <Link

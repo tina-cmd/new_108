@@ -32,10 +32,8 @@ class AuthController extends Controller
             'qty' => 'required',
         ]);
 
-        Inventory::updateOrCreate(
-            ['id' => $record['id']],
-            ['qty' => $record['qty']],
-        );
+        DB::table('inventories')->where('id', $record['id'])->update(['qty' => $record['qty']]);
+
 
         return redirect()->route('dashboard-inventory');
     }
@@ -47,12 +45,16 @@ class AuthController extends Controller
     }
     public function get_borrowed_books() {
         $id = Auth::user()->id;
+        $connection = DB::connection('pgsql');
+        // dd($connection);
         
         $studentSideBorrow = ViewBorrowedBook::where('user_id', '=', $id)
             ->where('status', '=', 'active')
             ->get();
-        $librarianSideBorrow = ViewBorrowedBook::where('status', '=', 'active')->get();
 
+        
+        $librarianSideBorrow = ViewBorrowedBook::where('status', '=', 'active')->get();
+        
 
         return Inertia::render('BorrowedBooks', ['studentSideBorrow' => $studentSideBorrow, 'librarianSideBorrow' => $librarianSideBorrow]);
     }

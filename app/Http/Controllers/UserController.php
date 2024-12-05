@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use App\Models\User;
+use Illuminate\Support\Facades\DB;
+use App\Models\Log;
 
 class UserController extends Controller
 {
@@ -27,5 +29,16 @@ class UserController extends Controller
 
         $id->update($role);
         return redirect()->back();
+    }
+
+    public function get_logs() {
+        $logs = Log::all();
+
+        // Format the log time to a more readable format
+        // $logs->each(function ($log) {
+        //     $log->log_time = $log->log_time->format('Y-m-d H:i:s');  // You can customize the format as needed
+        // });
+
+        return Inertia::render('Logs', ['logs' => $logs]);
     }
 }

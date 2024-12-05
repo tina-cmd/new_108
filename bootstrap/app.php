@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Middleware\ConnectionMiddleware;
 use App\Http\Middleware\CustomAuth;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
@@ -24,6 +25,7 @@ return Application::configure(basePath: dirname(__DIR__))
             'is-admin'=> IsAdmin::class,
             'is-member' => IsMember::class,
             'is-assistant' => IsAssistant::class,
+            'set-connection' => ConnectionMiddleware::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
