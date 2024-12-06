@@ -22,17 +22,6 @@ const props = defineProps({
 });
 
 
-
-
-// // State to manage role and visibility of forms
-// const showBorrowForm = ref(false);
-
-// // Toggles
-// const toggleBorrowForm = () => {
-//     showBorrowForm.value = !showBorrowForm.value;
-//     showReturnForm.value = false; // Close the return form if open
-// };
-
 const form = useForm({
     id: 0,
 });

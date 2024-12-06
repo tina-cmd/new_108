@@ -22,4 +22,8 @@ class BookRequest extends Model
     public function user() {
         return $this->belongsTo(User::class);
     }
+
+    public function borrowedBook() {
+        return $this->hasOne(BorrowedBook::class);
+    }
 }

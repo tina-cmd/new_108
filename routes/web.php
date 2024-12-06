@@ -25,6 +25,7 @@ Route::middleware(['cust-auth', 'is-member', 'set-connection'])->group(function 
     Route::post('/dashboard/request_book', [AuthController::class, 'request_book_post'])->name('request-book-post');
     Route::get('/dashboard/requested_books', [AuthController::class, 'requested_book'])->name('requested-book');
     Route::post('/dashboard/requested_books', [AuthController::class, 'cancel_request'])->name('cancel-request');
+    Route::get('/dashboard/user_return_request', [AuthController::class, 'user_return_request'])->name('user-return-request');
 
 
     Route::middleware('is-assistant')->group(function () {
@@ -33,6 +34,8 @@ Route::middleware(['cust-auth', 'is-member', 'set-connection'])->group(function 
         Route::get('/dashboard/borrow_request', [AuthController::class, 'get_borrow_request'])->name('get-borrow-request');
         Route::post('/dashboard/borrow_request/approve', [AuthController::class, 'approve_request'])->name('approve-request');
         Route::post('/dashboard/borrow_request/decline', [AuthController::class, 'decline_request'])->name('decline-request');
+        Route::get('/dashboard/return_request', [AuthController::class, 'return_request'])->name('return-request');
+        Route::post('/dashboard/return_request/approve', [AuthController::class, 'approve_return_request'])->name('approve-return-request');
 
         Route::middleware('is-admin')->group(function () {
             Route::get('/dashboard/books', [BookController::class, 'get_books'])->name('get-books');

@@ -17,14 +17,7 @@ class BorrowedBook extends Model
     ];
 
     // Relationship with Book
-    public function inventory()
-    {
-        return $this->belongsTo(Inventory::class);
-    }
-
-    // Relationship with User
-    public function user()
-    {
-        return $this->belongsTo(User::class);
+    public function bookRequest() {
+        return $this->belongsTo(BookRequest::class);
     }
 }

@@ -109,6 +109,23 @@ onBeforeUnmount(() => {
                 >
                     Borrow Request
                 </Link>
+
+                <Link
+                    v-if="
+                        auth.user.role === 'librarian' ||
+                        auth.user.role === 'assistant'
+                    "
+                    href="/dashboard/return_request"
+                    class="block px-4 py-2 text-left hover:bg-gray-300 rounded-md"
+                    :class="{
+                        active: $page.url.startsWith(
+                            '/dashboard/return_request'
+                        ),
+                    }"
+                >
+                    Return Request
+                </Link>
+
                 <Link
                     v-if="auth.user.role === 'member'"
                     href="/dashboard/request_book"
@@ -131,6 +148,19 @@ onBeforeUnmount(() => {
                     }"
                 >
                     Requested Books
+                </Link>
+
+                <Link
+                    v-if="auth.user.role === 'member'"
+                    href="/dashboard/user_return_request"
+                    class="block px-4 py-2 text-left hover:bg-gray-300 rounded-md"
+                    :class="{
+                        active: $page.url.startsWith(
+                            '/dashboard/user_return_request'
+                        ),
+                    }"
+                >
+                    Return Request
                 </Link>
 
                 <Link

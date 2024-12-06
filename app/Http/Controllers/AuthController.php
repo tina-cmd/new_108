@@ -38,11 +38,16 @@ class AuthController extends Controller
         return redirect()->route('dashboard-inventory');
     }
 
+
+
     public function get_borrow_request() {
         $borrowRequests = BookRequestView::all();
         // dd($records);
         return Inertia::render('BorrowRequest', ['borrowRequests' => $borrowRequests]);
     }
+
+
+
     public function get_borrowed_books() {
         $id = Auth::user()->id;
         $connection = DB::connection('pgsql');
@@ -76,7 +81,7 @@ class AuthController extends Controller
         //dd($updateBR);
         $updateBB = DB::table('borrowed_books')
             ->updateOrInsert(
-                ['inventory_id' => $record['inventory_id'], 'user_id' => $record['user_id'], 'qty' => $record['request_qty'], 'start_date' => Carbon::now()],
+                ['request_id' => $record['request_id'], 'start_date' => Carbon::now()],
                 ['status' => 'active']
             );
         
@@ -120,17 +125,17 @@ class AuthController extends Controller
             'qty' => 'required|integer',
         ]);
 
-        $qty = Inventory::where('id', '=', $data['i_id'])
-            ->pluck('qty')
-            ->first();
+        // $qty = Inventory::where('id', '=', $data['i_id'])
+        //     ->pluck('qty')
+        //     ->first();
 
-        Inventory::where('id', '=', $data['i_id'])
-            ->update(['qty' => ($qty + $data['qty'])]);
+        // Inventory::where('id', '=', $data['i_id'])
+        //     ->update(['qty' => ($qty + $data['qty'])]);
 
         BorrowedBook::where('id', '=', $data['b_id'])
-            ->update(['status' => 'returned']);
+            ->update(['status' => 'pending']);
 
-        return redirect()->route('get-borrowed-books', ['message' => 'Return Successful']);
+        return redirect()->route('get-borrowed-books');
     }  
 
     public function request_book() {
@@ -170,5 +175,33 @@ class AuthController extends Controller
             ->update(['status' => 'cancelled']);
 
         return redirect()->route('requested-book', ['message' => 'Cancel request']);
+    }
+
+    public function return_request() {
+        $books = ViewBorrowedBook::where('status', '=', 'pending')->get();
+
+        return Inertia::render('ReturnedBook', ['books' => $books]);
+    }
+
+    public function approve_return_request(Request $request) {
+        BorrowedBook::where('id', '=', $request->id)->update(['status' => 'returned']);
+
+        $qty = Inventory::where('book_id', '=', $request->book_id)->get('qty')->first();
+       
+        $newQty = (int) $qty->qty + (int) $request->return_qty;
+        
+        Inventory::where('book_id', '=', $request->book_id)->update(['qty' => $newQty]);
+
+        return redirect()->route('return-request');
+    }
+
+    public function user_return_request() {
+        $id = Auth::user()->id;
+        
+        $books = ViewBorrowedBook::where('user_id', '=', $id)
+            ->where('status', '=', 'pending')
+            ->get();
+        
+        return Inertia::render('UserRequestedReturnBook', ['returnedBooks' => $books]);
     }
 }
